@@ -1,0 +1,36 @@
+make "serverlib libload "libtest.so
+
+to main :port :handle_request
+end
+to http_response_init
+end
+to http_response_status :response :status
+end
+to http_respond :request :response
+end
+to http_response_header :response :header :content
+end
+to transformstring :p1 :p2
+end
+
+external "main [v0 startup i4 p4] :serverlib
+external "http_response_init [p4 http_response_init] :serverlib
+external "http_response_status [v0 http_response_status p4 i4] :serverlib
+external "http_respond [v0 http_respond p4 p4] :serverlib
+external "http_response_header [v0 http_response_header p4 s2 s2] :serverlib
+external "transformstring [v0 transformstring p4 s2] :serverlib
+; make "a listtoblock [67] [i2]
+; pr "1
+transformstring :a 67
+
+to handle_request :request
+make "response http_response_init 
+http_response_status :response 200
+http_response_header :response dataaddr "sssss dataaddr "text\/html\;\ charset=utf-8
+http_respond :request :response
+end
+internal "handle_request [v0 p4]
+
+to server.start :port
+main :port funcaddr "handle_request
+end

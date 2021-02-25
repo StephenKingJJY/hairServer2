@@ -1,0 +1,4 @@
+load "hairserver2.lgo 
+
+; server.get "/ [pr "console.log server.res.body "hello,hair! server.res.send]
+server.start 8080
